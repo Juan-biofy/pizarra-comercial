@@ -1,0 +1,7 @@
+# Nunca al repositorio público
+datos-locales/
+prototipo/
+*secretos*.json
+*.pdf
+.DS_Store
+node_modules/
