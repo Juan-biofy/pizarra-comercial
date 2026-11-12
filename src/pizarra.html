@@ -137,7 +137,7 @@ main{display:grid;grid-template-columns:minmax(0,34fr) minmax(0,66fr);gap:1.4vw;
 .dest .txt{min-width:0}
 
 /* Tabla */
-.tabla-wrap{overflow:auto;min-height:0;flex:1}
+.tabla-wrap{overflow:hidden;min-height:0;flex:1}
 table{width:100%;border-collapse:separate;border-spacing:0 .14em;font-variant-numeric:tabular-nums}
 th{font-size:.78em;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:800;text-align:center;
   padding:0 .4em .25em;line-height:1.1;vertical-align:bottom}
@@ -666,16 +666,18 @@ function ajustarTabla(){
   const w=$('#tablaWrap'),t=w.querySelector('table');
   t.style.fontSize='';t.style.height='';
   if(innerWidth<=1100||w.classList.contains('hidden'))return;
-  const H=w.clientHeight;if(!H)return;
-  const sobra=()=>t.scrollHeight>H+1||w.scrollWidth>w.clientWidth+1;
+  // Margen de seguridad: cada pantalla y navegador mide la letra un poco distinto
+  const H=Math.floor(w.clientHeight*.97);if(!H)return;
+  // La tabla ocupa todo el ancho; solo sobra si su contenido no cabe (el hueco tiene la barra oculta)
+  const sobra=()=>t.scrollHeight>H||w.scrollWidth>w.clientWidth;
   let f=Math.max(.6,Math.min(1.5,H/t.scrollHeight));
   t.style.fontSize=f+'em';
   for(let i=0;i<25&&sobra()&&f>.6;i++){f*=.965;t.style.fontSize=f+'em';}
-  t.style.height=Math.floor(H)+'px';
-  if(t.scrollHeight>H+1)t.style.height='';
+  t.style.height=H+'px';
+  if(t.scrollHeight>H)t.style.height='';
 }
 let ajusteT;addEventListener('resize',()=>{clearTimeout(ajusteT);ajusteT=setTimeout(ajustarTabla,150);});
-if(document.fonts)document.fonts.ready.then(()=>ajustarTabla());
+if(document.fonts)document.fonts.ready.then(()=>{ajustarTabla();setTimeout(ajustarTabla,800);});
 
 function pintarLeyenda(){
   const c=config&&config.comisiones;if(!c){$('#leyenda').classList.add('hidden');return;}

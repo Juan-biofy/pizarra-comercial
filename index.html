@@ -137,7 +137,7 @@ main{display:grid;grid-template-columns:minmax(0,34fr) minmax(0,66fr);gap:1.4vw;
 .dest .txt{min-width:0}
 
 /* Tabla */
-.tabla-wrap{overflow:auto;min-height:0;flex:1}
+.tabla-wrap{overflow:hidden;min-height:0;flex:1}
 table{width:100%;border-collapse:separate;border-spacing:0 .14em;font-variant-numeric:tabular-nums}
 th{font-size:.78em;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:800;text-align:center;
   padding:0 .4em .25em;line-height:1.1;vertical-align:bottom}
@@ -396,7 +396,7 @@ footer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1.4vw;align-ite
 
 <script>
 /* ============ Configuración que mete el script de montaje ============ */
-const CLOUD={"owner":"Juan-biofy","repo":"pizarra-datos","branch":"main","dir":"pizarra","read":{"n":600000,"s":"iLFmfAQKfkBtOELs8pAmSg==","i":"hrtwSJCFDH1hVln/","c":"9lC83FuJ9PmZIUrStnXgwr4AmEWaiz//zwHo8z0ol0sFH9ashUWdVTqfSWCUHYp7DiFVdUPXp3OaQWRMmuXDrFOExhSAjg3AzsiSh+v3zqSpingaivd20wE733rEGy9YDy8ygohChpgn9F3VIg=="},"write":{"n":600000,"s":"CI7+ZMaUsBSnrfLFUvi2tg==","i":"9RNEE5N7qL6jkvKw","c":"X71atsH41OYJcTAWY/8oQyKkycZhXkqajAEGqWHHfKETqEFVzDWg4QbTM8Nko4HvcC3uEgIx/ArziQ6cVLyAmrlJhMxw4qxvRSMauC2oo1H/qj+SaqK2Qd7762kOoYxU4gRpAen4qH1zZRUnWQ=="}};
+const CLOUD={"owner":"Juan-biofy","repo":"pizarra-datos","branch":"main","dir":"pizarra","read":{"n":600000,"s":"hP8EVNZpxvajzIRNdUy9OA==","i":"D7Tq2iWGXseY/sw+","c":"UnUFDe4E6zhtyu96krcSy/m8DWVKNgis0pKThqqORU/umN98dkcKx+gfsas0KuFLsmXgCu3xD3qiWw4mYxWzK+plNKWWGvSvaWdmCstAYJL1CsCMBe9+1mvIXZqISndT1AZ7LNVCYAea3ba8kg=="},"write":{"n":600000,"s":"Eh0/Hbsn9yo8dCuxH+freA==","i":"VU97m28S0hJynE0z","c":"hRZHeq75TD9Fuk15nKW7UdRTEa3HTU+7z0+/y3TKAcuy0X/+69ZVeocARhEeg6q70wBbMLHMr1dPjNYAodm5AbmqcTM3cjbtId5LnEZcgQMr5UPO8Yekytz6SKZ4kMB/o0y6VSih6lj68Qo5vA=="}};
 const LOCAL_CONFIG=/*__CONFIG__*/null;
 
 /* ============ Utilidades ============ */
@@ -666,16 +666,18 @@ function ajustarTabla(){
   const w=$('#tablaWrap'),t=w.querySelector('table');
   t.style.fontSize='';t.style.height='';
   if(innerWidth<=1100||w.classList.contains('hidden'))return;
-  const H=w.clientHeight;if(!H)return;
-  const sobra=()=>t.scrollHeight>H+1||w.scrollWidth>w.clientWidth+1;
+  // Margen de seguridad: cada pantalla y navegador mide la letra un poco distinto
+  const H=Math.floor(w.clientHeight*.97);if(!H)return;
+  // La tabla ocupa todo el ancho; solo sobra si su contenido no cabe (el hueco tiene la barra oculta)
+  const sobra=()=>t.scrollHeight>H||w.scrollWidth>w.clientWidth;
   let f=Math.max(.6,Math.min(1.5,H/t.scrollHeight));
   t.style.fontSize=f+'em';
   for(let i=0;i<25&&sobra()&&f>.6;i++){f*=.965;t.style.fontSize=f+'em';}
-  t.style.height=Math.floor(H)+'px';
-  if(t.scrollHeight>H+1)t.style.height='';
+  t.style.height=H+'px';
+  if(t.scrollHeight>H)t.style.height='';
 }
 let ajusteT;addEventListener('resize',()=>{clearTimeout(ajusteT);ajusteT=setTimeout(ajustarTabla,150);});
-if(document.fonts)document.fonts.ready.then(()=>ajustarTabla());
+if(document.fonts)document.fonts.ready.then(()=>{ajustarTabla();setTimeout(ajustarTabla,800);});
 
 function pintarLeyenda(){
   const c=config&&config.comisiones;if(!c){$('#leyenda').classList.add('hidden');return;}
