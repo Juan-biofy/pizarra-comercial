@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>Pizarra comercial</title>
-<link rel="icon" href="data:image/png;base64,__LOGO__">
+<link rel="icon" href="data:image/svg+xml;base64,__LOGO_AZUL__">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f3f6fc; --panel:#ffffff; --panel-2:#eef3ff; --ink:#0f1b3d; --muted:#5d6a8a;
-  --line:#dfe6f3; --brand:#2f6cf0; --brand-2:#1d4fc4; --brand-soft:#e3ecff;
+  --line:#dfe6f3; --brand:#2968fe; --brand-2:#1a4fd1; --brand-soft:#e3ecff;
   --gold:#f2b705; --gold-soft:#fff4cc; --silver:#9aa6b8; --silver-soft:#eef1f6;
   --bronze:#d0803a; --bronze-soft:#fbe9da; --neg:#d93a3a; --pos:#13a36b; --pos-soft:#dcf7ec;
   --prod:#7b4dff; --prod-soft:#efe8ff;
@@ -19,14 +19,14 @@
 }
 :root[data-theme="dark"]{
   --bg:#0b1226; --panel:#121b36; --panel-2:#17224a; --ink:#eef2ff; --muted:#9aa8cc;
-  --line:#243258; --brand:#5b8cff; --brand-2:#8aaeff; --brand-soft:#1b2a5a;
+  --line:#243258; --brand:#4d82ff; --brand-2:#8aaeff; --brand-soft:#1b2a5a;
   --gold-soft:#3a3110; --silver-soft:#262f45; --bronze-soft:#3a2614; --neg:#ff6b6b; --pos:#3ddc97; --pos-soft:#123d30;
   --prod:#a88bff; --prod-soft:#2a2150;
   --shadow:0 .4vw 1.6vw rgba(0,0,0,.35); --bubble:rgba(120,160,255,.08);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;
+body{background:var(--bg);color:var(--ink);font-family:Montserrat,system-ui,sans-serif;
   font-size:clamp(13px,min(1.02vw,1.85vh),44px);transition:background .4s,color .4s;overflow-x:hidden}
 button{font:inherit;color:inherit}
 .hidden{display:none!important}
@@ -41,13 +41,25 @@ button{font:inherit;color:inherit}
 
 /* Cabecera */
 header{display:flex;align-items:center;gap:1.3vw;flex-wrap:wrap}
-.logo{height:3.6em}
-:root[data-theme="dark"] .logo{filter:brightness(0) invert(1)}
-.titulo h1{font-size:2.1em;font-weight:900;letter-spacing:-.02em;line-height:1}
-.fecha{margin-top:.35em;display:inline-flex;align-items:center;gap:.5em;background:var(--brand);color:#fff;border:0;cursor:pointer;
-  font-weight:800;padding:.3em .9em;border-radius:99em;font-size:.95em;box-shadow:0 .2em .8em rgba(47,108,240,.3)}
-.fecha .flecha{opacity:.8;font-size:.8em}
-.fecha.antigua{background:#c77700}
+.logo{height:5.4em;display:block}
+.logo.blanco{display:none}
+:root[data-theme="dark"] .logo.azul{display:none}
+:root[data-theme="dark"] .logo.blanco{display:block}
+.fecha{display:flex;align-items:center;gap:.8em;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;border:0;
+  padding:.45em 1.3em .45em .5em;border-radius:1.1em;box-shadow:0 .35em 1.2em rgba(41,104,254,.35);text-align:left;position:relative;overflow:hidden}
+.fecha::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.28) 50%,transparent 65%);
+  transform:translateX(-120%);animation:destello 7s ease-in-out 2s infinite}
+.fecha.admin{cursor:pointer}
+.fecha .cal{background:#fff;color:var(--brand);border-radius:.7em;width:3.5em;display:flex;flex-direction:column;align-items:center;overflow:hidden;
+  box-shadow:0 .15em .4em rgba(0,0,0,.15);flex:none}
+.fecha .cal small{display:block;width:100%;text-align:center;background:#ff4d4d;color:#fff;font-weight:800;font-size:.7em;letter-spacing:.08em;padding:.12em 0}
+.fecha .cal b{font-weight:900;font-size:1.7em;line-height:1.15;color:var(--ink)}
+:root[data-theme="dark"] .fecha .cal b{color:#0f1b3d}
+.fecha .ftxt small{display:block;font-size:.75em;font-weight:700;opacity:.9;text-transform:uppercase;letter-spacing:.08em}
+.fecha .ftxt b{display:block;font-size:1.85em;font-weight:900;line-height:1.1;letter-spacing:-.01em}
+.fecha .flecha{opacity:.8;font-size:.9em;display:none}
+.fecha.admin .flecha{display:inline}
+.fecha.antigua{background:linear-gradient(135deg,#e08a00,#b86a00)}
 .espacio{flex:1}
 .vistas{position:relative;display:grid;grid-template-columns:repeat(3,1fr);background:var(--panel);
   border-radius:99em;padding:.3em;box-shadow:var(--shadow);min-width:22em}
@@ -120,7 +132,7 @@ main{display:grid;grid-template-columns:minmax(0,34fr) minmax(0,66fr);gap:1.4vw;
 .dest .mini{width:2.6em;height:2.6em;border-radius:50%;display:grid;place-items:center;font-weight:900;color:#fff;background:var(--dc);flex:none;overflow:hidden;font-size:.9em}
 .dest .mini img{width:100%;height:100%;object-fit:cover}
 .dest small{display:block;font-size:.72em;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--dc)}
-.dest b{display:block;font-weight:800;line-height:1.1;font-size:.95em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dest b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:800;line-height:1.1;font-size:.95em}
 .dest .num{margin-left:auto;font-size:2em;font-weight:900;color:var(--dc)}
 .dest .txt{min-width:0}
 
@@ -234,7 +246,7 @@ footer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1.4vw;align-ite
 /* Pantalla de contraseña */
 .candado{position:fixed;inset:0;z-index:40;background:var(--bg);display:grid;place-items:center;padding:16px}
 .candado form{background:var(--panel);border-radius:1.5em;box-shadow:var(--shadow);padding:2.2em 2em;width:min(26em,100%);text-align:center;display:flex;flex-direction:column;gap:.9em;font-size:max(15px,1em)}
-.candado .logo{height:4.5em;margin:0 auto}
+.candado .logo{height:6em;margin:0 auto}
 .candado h2{font-weight:900;font-size:1.5em}
 .candado input[type=password]{font:inherit;font-size:1.1em;padding:.7em .9em;border-radius:.8em;border:2px solid var(--line);background:var(--bg);color:var(--ink);text-align:center}
 .candado label{display:flex;gap:.5em;align-items:center;justify-content:center;font-weight:700;color:var(--muted);font-size:.9em}
@@ -267,11 +279,13 @@ footer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1.4vw;align-ite
 
 <div class="app">
   <header>
-    <img class="logo" src="data:image/png;base64,__LOGO__" alt="Culligan Biofy">
-    <div class="titulo">
-      <h1>Pizarra comercial</h1>
-      <button class="fecha" id="fecha" title="Cambiar de versión"><span id="fechaTxt">Cargando…</span><span class="flecha">▾</span></button>
-    </div>
+    <img class="logo azul" src="data:image/svg+xml;base64,__LOGO_AZUL__" alt="Culligan Biofy">
+    <img class="logo blanco" src="data:image/svg+xml;base64,__LOGO_BLANCO__" alt="Culligan Biofy">
+    <button class="fecha" id="fecha" title="Fecha de los datos">
+      <span class="cal"><small id="calMes">—</small><b id="calDia">—</b></span>
+      <span class="ftxt"><small>Pizarra comercial · datos hasta el</small><b id="fechaTxt">Cargando…</b></span>
+      <span class="flecha">▾</span>
+    </button>
     <div class="espacio"></div>
     <div class="vistas" id="vistas">
       <div class="thumb" id="thumb"></div>
@@ -322,7 +336,7 @@ footer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1.4vw;align-ite
 <aside class="cajon" id="cajon">
   <header><h3>Versiones y datos</h3><button class="icono" id="cerrarPanel" style="width:2.2em;height:2.2em">✕</button></header>
   <div class="cuerpo">
-    <section>
+    <section id="secVersiones">
       <h4>Versión que se ve</h4>
       <div id="listaVersiones"></div>
       <button class="btn" id="verUltima">Ver siempre la última</button>
@@ -335,7 +349,7 @@ footer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1.4vw;align-ite
         <input type="password" id="pwAdmin" placeholder="Contraseña de administrador" autocomplete="current-password" style="flex:1;font:inherit;padding:.55em .7em;border-radius:.6em;border:1px solid var(--line);background:var(--bg);color:var(--ink)">
         <button class="btn prim">Entrar</button>
       </form>
-      <p class="nota-p" style="margin-top:.4em">Para subir el PDF, borrar versiones y cambiar fotos.</p>
+      <p class="nota-p" style="margin-top:.4em">Este dispositivo solo puede ver la última versión. Con la contraseña de administrador se pueden subir PDF, elegir versiones y poner fotos.</p>
     </section>
 
     <section id="secSubir" class="hidden">
@@ -368,7 +382,8 @@ footer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1.4vw;align-ite
 <!-- Contraseña -->
 <div class="candado hidden" id="candado">
   <form id="formCandado">
-    <img class="logo" src="data:image/png;base64,__LOGO__" alt="Culligan Biofy">
+    <img class="logo azul" src="data:image/svg+xml;base64,__LOGO_AZUL__" alt="Culligan Biofy">
+    <img class="logo blanco" src="data:image/svg+xml;base64,__LOGO_BLANCO__" alt="Culligan Biofy">
     <h2>Pizarra comercial</h2>
     <input type="password" id="pwCandado" placeholder="Contraseña" autocomplete="current-password">
     <label><input type="checkbox" id="recordar" checked> Recordar este dispositivo (2 semanas)</label>
@@ -400,6 +415,7 @@ const fechaLarga=iso=>{const d=new Date(iso+'T12:00:00');return `${DIAS[d.getDay
 const fechaCorta=iso=>{const d=new Date(iso+'T12:00:00');return `${DIAS[d.getDay()]} ${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;};
 const CORONA='<svg viewBox="0 0 64 48"><path fill="#f2b705" d="M4 14l14 12L32 4l14 22 14-12-6 30H10z"/><rect x="10" y="40" width="44" height="6" rx="2" fill="#e09b00"/><circle cx="4" cy="14" r="4" fill="#f2b705"/><circle cx="32" cy="4" r="4" fill="#f2b705"/><circle cx="60" cy="14" r="4" fill="#f2b705"/></svg>';
 const VISTAS=['Global','Córdoba','Alicante'];
+const pl=(x,uno,varios)=>Math.abs(x)===1?uno:varios;
 const COLS=['PRODUC.','CERR. COMERCIAL','NO APTO','NULO','T.BRUTO','T.RETRO','T.NETO','ABONADA'];
 
 /* ============ Acceso (contraseña y GitHub) ============ */
@@ -590,13 +606,15 @@ function pintar(confeti=false){
   $('#titTabla').textContent='Ranking · '+nombre;
   $('#titPodio').textContent='Podio · '+nombre;
   if(!actual){
-    $('#fechaTxt').textContent='Sin datos todavía';
+    $('#fechaTxt').textContent='Sin datos todavía';$('#calDia').textContent='—';$('#calMes').textContent='—';
     $('#podio').innerHTML='';$('#destacados').innerHTML='';
     $('#filas').innerHTML='';$('#vacio').classList.remove('hidden');$('#tablaWrap').classList.add('hidden');
     $('#cinta').innerHTML='';return;
   }
   $('#vacio').classList.add('hidden');$('#tablaWrap').classList.remove('hidden');
-  $('#fechaTxt').textContent='📅 Datos hasta el '+fechaLarga(actual.fechaDatos);
+  {const d=new Date(actual.fechaDatos+'T12:00:00');
+   $('#fechaTxt').textContent=fechaLarga(actual.fechaDatos).replace(/^./,c=>c.toUpperCase());
+   $('#calDia').textContent=d.getDate();$('#calMes').textContent=MESES[d.getMonth()].slice(0,3).toUpperCase();}
   $('#fecha').classList.toggle('antigua',fijada&&versiones.length&&versiones[0].id!==actual.id);
   const lista=ordenar(nombre==='Global'?actual.filas:actual.filas.filter(c=>c.eq===nombre));
 
@@ -607,7 +625,7 @@ function pintar(confeti=false){
     return `<div class="puesto p${i+1}">
       <div class="avatar">${i===0?`<span class="corona">${CORONA}</span>`:''}${avatarHTML(c)}${chispas}</div>
       <div class="nombre">${esc(c.n)}</div>
-      <div class="bloque"><span class="pos">${i+1}º</span><span class="neto n" data-n="${c.v[6]}">0</span><span class="lbl">netas · ${fmt(c.v[7])} abonadas</span></div>
+      <div class="bloque"><span class="pos">${i+1}º</span><span class="neto n" data-n="${c.v[6]}">0</span><span class="lbl">${pl(c.v[6],'neta','netas')} · ${fmt(c.v[7])} ${pl(c.v[7],'abonada','abonadas')}</span></div>
     </div>`;}).join('');
 
   // Destacados: más producción y más abonadas
@@ -626,12 +644,13 @@ function pintar(confeti=false){
   $('#filas').innerHTML=lista.map((c,i)=>`<tr class="fila ${i<3?'r'+(i+1):''}" style="animation-delay:${i*45}ms"><td>${i+1}</td><td class="nom">${esc(c.n)}${i===0?`<span class="mini-corona">${CORONA}</span>`:''}</td>${celdas(c.v,c)}</tr>`).join('')
     +`<tr class="total"><td></td><td class="nom">Total ${nombre==='Global'?'equipo':esc(nombre)}</td>${celdas(tot,null)}</tr>`;
   document.querySelectorAll('.n').forEach(el=>cuenta(el,+el.dataset.n));
+  ajustarTabla();
 
   // Cinta de titulares (solo en positivo)
   const m=[];
-  if(top[0]&&top[0].v[6]>0)m.push(`👑 ${esc(top[0].n)} lidera ${nombre==='Global'?'la pizarra':'en '+esc(nombre)} con ${fmt(top[0].v[6])} ventas netas`);
-  if(top[1]&&top[1].v[6]>0)m.push(`🥈 ${esc(top[1].n)}: ${fmt(top[1].v[6])} netas`);
-  if(top[2]&&top[2].v[6]>0)m.push(`🥉 ${esc(top[2].n)}: ${fmt(top[2].v[6])} netas`);
+  if(top[0]&&top[0].v[6]>0)m.push(`👑 ${esc(top[0].n)} lidera ${nombre==='Global'?'la pizarra':'en '+esc(nombre)} con ${fmt(top[0].v[6])} ${pl(top[0].v[6],'venta neta','ventas netas')}`);
+  if(top[1]&&top[1].v[6]>0)m.push(`🥈 ${esc(top[1].n)}: ${fmt(top[1].v[6])} ${pl(top[1].v[6],'neta','netas')}`);
+  if(top[2]&&top[2].v[6]>0)m.push(`🥉 ${esc(top[2].n)}: ${fmt(top[2].v[6])} ${pl(top[2].v[6],'neta','netas')}`);
   if(mp.length&&mp.length<=3)m.push(`🚀 Más producción: ${mp.map(c=>esc(c.n)).join(' y ')} con ${fmt(mp[0].v[0])}`);
   if(ma.length&&ma.length<=3)m.push(`💶 Más abonadas: ${ma.map(c=>esc(c.n)).join(' y ')} con ${fmt(ma[0].v[7])}`);
   if(nombre==='Global')['Córdoba','Alicante'].forEach(e=>{const t=actual.filas.filter(c=>c.eq===e).reduce((s,c)=>s+c.v[6],0);m.push(`📍 ${e}: ${fmt(t)} ventas netas`);});
@@ -641,6 +660,22 @@ function pintar(confeti=false){
   $('#cinta').innerHTML=html+html;$('#cinta').style.animationDuration=(m.length*6)+'s';
   if(confeti)lanzarConfeti();
 }
+
+// La tabla crece o encoge para llenar su hueco: con menos comerciales, filas y letra más grandes
+function ajustarTabla(){
+  const w=$('#tablaWrap'),t=w.querySelector('table');
+  t.style.fontSize='';t.style.height='';
+  if(innerWidth<=1100||w.classList.contains('hidden'))return;
+  const H=w.clientHeight;if(!H)return;
+  const sobra=()=>t.scrollHeight>H+1||w.scrollWidth>w.clientWidth+1;
+  let f=Math.max(.6,Math.min(1.5,H/t.scrollHeight));
+  t.style.fontSize=f+'em';
+  for(let i=0;i<25&&sobra()&&f>.6;i++){f*=.965;t.style.fontSize=f+'em';}
+  t.style.height=Math.floor(H)+'px';
+  if(t.scrollHeight>H+1)t.style.height='';
+}
+let ajusteT;addEventListener('resize',()=>{clearTimeout(ajusteT);ajusteT=setTimeout(ajustarTabla,150);});
+if(document.fonts)document.fonts.ready.then(()=>ajustarTabla());
 
 function pintarLeyenda(){
   const c=config&&config.comisiones;if(!c){$('#leyenda').classList.add('hidden');return;}
@@ -706,7 +741,7 @@ $('#listaVersiones').addEventListener('click',async e=>{
     try{await api.borrar(b.dataset.borrar);if(actual&&actual.id===b.dataset.borrar){actual=null;fijada=false;}await refrescar();toast('Versión borrada');}
     catch(err){toast(errGh(err));b.disabled=false;}
     return;}
-  const it=e.target.closest('.ver');if(!it)return;
+  const it=e.target.closest('.ver');if(!it||!esAdmin())return;
   try{fijada=it.dataset.id!==(versiones[0]&&versiones[0].id);await cargarVersion(it.dataset.id);}catch(err){toast(errGh(err));}
 });
 $('#verUltima').onclick=async()=>{fijada=false;try{await refrescar();if(versiones[0])await cargarVersion(versiones[0].id);}catch(err){toast(errGh(err));}};
@@ -716,9 +751,10 @@ setInterval(()=>{if(config&&!document.hidden)refrescar().catch(()=>{});},5*60*10
 /* ============ Panel lateral ============ */
 function abrirPanel(){pintarPanel();$('#cajon').classList.add('on');$('#velo').classList.add('on');}
 function cerrarPanel(){$('#cajon').classList.remove('on');$('#velo').classList.remove('on');}
-$('#abrirPanel').onclick=abrirPanel;$('#fecha').onclick=abrirPanel;$('#cerrarPanel').onclick=cerrarPanel;$('#velo').onclick=cerrarPanel;
+$('#abrirPanel').onclick=abrirPanel;$('#fecha').onclick=()=>{if(esAdmin())abrirPanel();};$('#cerrarPanel').onclick=cerrarPanel;$('#velo').onclick=cerrarPanel;
 function pintarPanel(){
   const adm=esAdmin();
+  $('#secVersiones').classList.toggle('hidden',!adm);
   $('#secAdminLogin').classList.toggle('hidden',adm||!cloudOn);
   $('#secSubir').classList.toggle('hidden',!adm);
   $('#secFotos').classList.toggle('hidden',!adm);
@@ -729,10 +765,10 @@ function pintarPanel(){
 $('#formAdmin').onsubmit=async e=>{e.preventDefault();const pw=$('#pwAdmin').value;if(!pw)return;
   const t=await descifrar(CLOUD.write,pw);
   if(!t){toast('Contraseña de administrador incorrecta');$('#pwAdmin').select();return;}
-  gh.write=t;gh.role='admin';guardarAcceso(recordado());$('#pwAdmin').value='';pintarPanel();toast('Modo administrador activado');};
+  gh.write=t;gh.role='admin';guardarAcceso(recordado());$('#pwAdmin').value='';pintarPanel();marcarRol();toast('Modo administrador activado');};
 $('#salirAdmin').onclick=async()=>{
-  // vuelve a modo solo ver: hace falta la contraseña normal otra vez si no se guardó la de lectura
-  gh.write=null;gh.role='ver';guardarAcceso(recordado());pintarPanel();toast('Has salido del modo administrador');};
+  gh.write=null;gh.role='ver';fijada=false;guardarAcceso(recordado());pintarPanel();marcarRol();refrescar().catch(()=>{});toast('Has salido del modo administrador');};
+function marcarRol(){$('#fecha').classList.toggle('admin',esAdmin());}
 $('#cerrarSesion').onclick=()=>{borrarAcceso();location.reload();};
 
 // Subir PDF
@@ -825,18 +861,18 @@ $('#formCandado').onsubmit=async e=>{
   if(!read){const w=await descifrar(CLOUD.write,pw);if(w){read=w;write=w;role='admin';}}
   if(!read){b.disabled=false;b.textContent='Entrar';$('#errCandado').textContent='Contraseña incorrecta';
     const f=$('#formCandado');f.classList.remove('sacude');void f.offsetWidth;f.classList.add('sacude');$('#pwCandado').select();return;}
-  gh.read=read;gh.write=write;gh.role=role;guardarAcceso($('#recordar').checked);
+  gh.read=read;gh.write=write;gh.role=role;guardarAcceso($('#recordar').checked);marcarRol();
   b.textContent='Cargando…';
   const ok=await arrancar();
   b.disabled=false;b.textContent='Entrar';
   if(ok){$('#candado').classList.add('hidden');$('#pwCandado').value='';}
 };
-burbujas();pintar();
+burbujas();pintar();marcarRol();
 (async()=>{
   if(!cloudOn){await arrancar();return;}
   const a=leerAcceso();
   if(!a){mostrarCandado();return;}
-  Object.assign(gh,{read:a.read,write:a.write,role:a.role});
+  Object.assign(gh,{read:a.read,write:a.write,role:a.role});marcarRol();
   await arrancar();
 })();
 </script>

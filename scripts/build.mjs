@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /*
   Monta el index.html publicable de la Pizarra comercial a partir de src/pizarra.html:
-    1. sustituye cada «__LOGO__» por el logo en base64;
+    1. sustituye «__LOGO_AZUL__» y «__LOGO_BLANCO__» por los logos verticales (SVG) en base64;
     2. sustituye «const CLOUD=/*__CLOUD__*\/null;» por la conexión con el repositorio privado de datos,
        con los tokens de GitHub cifrados con las contraseñas.
 
@@ -13,18 +13,17 @@
 
   pizarra-secretos.json (FUERA del repositorio, no se comparte):
       {
-        "owner": "Juan-biofy", "repo": "panel-datos", "branch": "main", "dir": "pizarra",
+        "owner": "Juan-biofy", "repo": "pizarra-datos", "branch": "main", "dir": "pizarra",
         "pw_ver":   "contraseña para ver la pizarra (la TV, los comerciales)",
         "pw_admin": "contraseña de administrador (subir PDF, borrar versiones, fotos)",
-        "read_token":  "github_pat_… (solo lectura del repo de datos)",
-        "write_token": "github_pat_… (lectura y escritura del repo de datos)"
+        "read_token":  "github_pat_… (Contents: solo lectura, solo del repo pizarra-datos)",
+        "write_token": "github_pat_… (Contents: lectura y escritura, solo del repo pizarra-datos)"
       }
-  Si los tokens ya están en el secretos.json del Dashboard Comercial, se pueden quitar de aquí y pasar
-  ese fichero con --tokens: se toman de él read_token, write_token, owner y repo.
+  Opcional: --tokens otro.json toma de ese fichero los campos que falten (owner, repo, read_token, write_token).
 
   Qué abre cada contraseña:
-      read  = pw_ver   -> read_token    (ver)
-      write = pw_admin -> write_token   (administrador; también sirve para ver)
+      read  = pw_ver   -> read_token    (solo ver la última versión y cambiar claro/oscuro)
+      write = pw_admin -> write_token   (administrador: subir PDF, elegir y borrar versiones, fotos)
 
   El script nunca escribe los tokens ni las contraseñas en pantalla.
   Requiere Node 18 o superior. Sin dependencias.
@@ -38,13 +37,15 @@ const aqui = dirname(fileURLToPath(import.meta.url));
 const arg = (k, d) => { const i = process.argv.indexOf('--' + k); return i > 0 ? process.argv[i + 1] : d; };
 const flag = k => process.argv.includes('--' + k);
 const src = arg('src', join(aqui, '../src/pizarra.html'));
-const logo = arg('logo', join(aqui, '../src/logo.png'));
+const logoAzul = arg('logo', join(aqui, '../src/logo-vertical-blue.svg'));
+const logoBlanco = arg('logo-blanco', join(aqui, '../src/logo-vertical-white.svg'));
 const out = arg('out', join(aqui, '../index.html'));
 
 let html = readFileSync(src, 'utf8');
 const MARK = 'const CLOUD=/*__CLOUD__*/null;', MARKC = 'const LOCAL_CONFIG=/*__CONFIG__*/null;';
 if (!html.includes(MARK) || !html.includes(MARKC)) { console.error('No encuentro las marcas __CLOUD__ / __CONFIG__ en ' + src); process.exit(1); }
-html = html.split('__LOGO__').join(readFileSync(logo).toString('base64'));
+html = html.split('__LOGO_AZUL__').join(readFileSync(logoAzul).toString('base64'))
+  .split('__LOGO_BLANCO__').join(readFileSync(logoBlanco).toString('base64'));
 
 let cloud = null;
 if (flag('local')) {
