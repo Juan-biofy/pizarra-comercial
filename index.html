@@ -401,7 +401,7 @@ footer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1.4vw;align-ite
 
 <script>
 /* ============ Configuración que mete el script de montaje ============ */
-const CLOUD={"owner":"Juan-biofy","repo":"pizarra-datos","branch":"main","dir":"pizarra","read":{"n":600000,"s":"k4c5zLtz/xZKJWnA3jUfXg==","i":"H5KnOxgHR3bQEMX/","c":"qtNYb59cWpMEW5fZWW5jwpZVHbybtqy166YgtWZcMWNqBwCi9xpNjjHzcMZjrZcph3x7DCuBIBAZAXDRt2rkJEzqHZ8RTw4t3HgZGM6cwGlkgV+UDpZwlFqyCyX3TmXL36AfSm+ChGvpoaKXzg=="},"write":{"n":600000,"s":"r0jLUAS5iqM7foWQOB4wiA==","i":"P9ljJPyowxjbdp7k","c":"mG+g5yLOpr+OXlMnAJRgeMG3YsVOqyPK85AHm6mXfvGDqduuFPOEu7nymEh1zXw9xeHK3r3GRPqfSKtGlu14lMtt1aVn3o0sbIxqMOeN4Uu4PkF84hRTZ1voIhirYRRf2qksN2F+Qus8oljTnA=="}};
+const CLOUD={"owner":"Juan-biofy","repo":"pizarra-datos","branch":"main","dir":"pizarra","reads":[{"n":600000,"s":"Wv+miXz1fEe8RHWVj4bZ0A==","i":"u82YcBSFLzjqOpji","c":"OfT2rCuKQm+ZOW/XqvSAm43RtaJ6Ps3ey4h2j9HhmbUols4QgGxuGw8f2WATj9xoNLrbvIKmKac9o2F1/WSllIal4+zkgv2g6C113iaXbPo+HfX1DPrJcf+2A8uOIDC8GnkJS8/GQ9zBHIUbkw=="},{"n":600000,"s":"DUJYP+x6LMhB0Ygm7poQ1w==","i":"YEnKmi04JAtrq4xo","c":"BhQn2KP+PwFbeESkcMD+L6Uq6q4eL5iN57Bzp4UAQoF4h48V4OwD91vB7gMfCiHqANv4XWrWMZZmVBY4OusWY9ZGDrajt+Q6alvZf8YOw4lH/hH5my8xqMjy72GLCptKe61FCKRCn+ZWRVJsJQ=="}],"writes":[{"n":600000,"s":"ElCke/muMQxxOB4gQkuM8g==","i":"o3tnwqJdDDJ2uhV5","c":"uEbFMNLEPonZJBBlTjMKnUE/5xY/ES95n5/VA/Brl4SIIDhhk5xVuLImjif6VGMib7INPzzkdfNg3A2BOC7F3SCZ7pABgsymXHryCPDkRf42ng4o6ImMJDlbVFXwbzNoB+5Z/Ndx4sDfVhfjCA=="},{"n":600000,"s":"ZKbFRg6t5S87IHIIBbMAJw==","i":"2OtvrnxPhJ7kdB7j","c":"rUCrXwt+hj/a0M7+bVQOLMMfpWyfY7+OjyRstLixBk2+k3bj3lVXjM8r+S1ob2grlc2EO77I/v0Pd5saYR9Jk5ZPPpZyztYwkPp6YxnwxMrUqjKEGbEz3SsDiTPqEQHNMNEuJkCpFtVWQK9xag=="},{"n":600000,"s":"GUMtDvqxLdfRiZOqSR2cKg==","i":"az1Ko74WOtRi/xs5","c":"MR1jQWVCl6otzgNC/j0Y1uLlKtxq1oJDIPdXWxizWxHvGUk27RvgIICG03FulzOUXsOHWjmeWCwEPFwpuXl2tKUtRu8vf5hhqLYE7DiCMlzHQ1rV4mnZ7pYFcaMRiePonwteWgs4029hTPc3tw=="},{"n":600000,"s":"1XvJlC4gGbn4AQZozH9Zng==","i":"Oj4PE7Q2Mqxt1pUl","c":"bf93BL/oPS/NhedhBTA3tZus6bh0AlhfTVhr+u3y+DUsQeUnU5M9G0J1qkI7hwzJSaQLWgfX6iJU0A1WHGTmbVeIFodFilvqal3e5IUS/31hJjPo8QOztVpWq/jGB8mSVpiVx4TPuYKjRh6kww=="},{"n":600000,"s":"GNgF7W9kyekwYezIIN2FdA==","i":"F4OnG5yTZpo0E72w","c":"mwaCzGJIbjcBj/xXq1X88/pPVAIzTGcnCb19QMcwcPx1fNOaoWV7ZiOpEVnRzcXF000g9crWNTOYeWlpXsJsUPwoQlvW7Ew71yUOcMEpiF7BH26voLp4Ayxf5Hd7WXz7d9aOvouJBVgxStW+3g=="}]};
 const LOCAL_CONFIG=/*__CONFIG__*/null;
 
 /* ============ Utilidades ============ */
@@ -770,7 +770,7 @@ function pintarPanel(){
   pintarVersiones();pintarFotos();
 }
 $('#formAdmin').onsubmit=async e=>{e.preventDefault();const pw=$('#pwAdmin').value;if(!pw)return;
-  const t=await descifrar(CLOUD.write,pw);
+  const t=await primero(CLOUD.writes,pw);
   if(!t){toast('Contraseña de administrador incorrecta');$('#pwAdmin').select();return;}
   gh.write=t;gh.role='admin';guardarAcceso(recordado());$('#pwAdmin').value='';pintarPanel();marcarRol();toast('Modo administrador activado');};
 $('#salirAdmin').onclick=async()=>{
@@ -860,12 +860,14 @@ async function arrancar(){
     toast(errGh(e));return true;
   }
 }
+// Cada persona tiene su propia contraseña: se prueba con cada bloque hasta que uno abre
+async function primero(lista,pw){for(const b of lista||[]){const t=await descifrar(b,pw);if(t)return t;}return null;}
 function mostrarCandado(msg){$('#candado').classList.remove('hidden');$('#errCandado').textContent=msg||'';setTimeout(()=>$('#pwCandado').focus(),50);}
 $('#formCandado').onsubmit=async e=>{
   e.preventDefault();const pw=$('#pwCandado').value;if(!pw)return;
   const b=$('#btnCandado');b.disabled=true;b.textContent='Comprobando…';$('#errCandado').textContent='';
-  let read=await descifrar(CLOUD.read,pw),write=null,role='ver';
-  if(!read){const w=await descifrar(CLOUD.write,pw);if(w){read=w;write=w;role='admin';}}
+  let read=await primero(CLOUD.reads,pw),write=null,role='ver';
+  if(!read){const w=await primero(CLOUD.writes,pw);if(w){read=w;write=w;role='admin';}}
   if(!read){b.disabled=false;b.textContent='Entrar';$('#errCandado').textContent='Contraseña incorrecta';
     const f=$('#formCandado');f.classList.remove('sacude');void f.offsetWidth;f.classList.add('sacude');$('#pwCandado').select();return;}
   gh.read=read;gh.write=write;gh.role=role;guardarAcceso($('#recordar').checked);marcarRol();

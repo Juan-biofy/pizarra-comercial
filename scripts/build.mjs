@@ -59,18 +59,23 @@ if (flag('local')) {
     const T = JSON.parse(readFileSync(tf, 'utf8'));
     for (const k of ['owner', 'repo', 'read_token', 'write_token']) if (!S[k] && T[k]) S[k] = T[k];
   }
-  for (const k of ['owner', 'repo', 'pw_ver', 'pw_admin', 'read_token', 'write_token'])
+  for (const k of ['owner', 'repo', 'read_token', 'write_token'])
     if (!S[k]) { console.error('Falta «' + k + '» en los secretos'); process.exit(1); }
-  if (S.pw_ver === S.pw_admin) { console.error('La contraseña de ver y la de administrador tienen que ser distintas'); process.exit(1); }
-  if (S.pw_ver.length < 10 || S.pw_admin.length < 12) console.warn('Aviso: usa contraseñas largas (ver ≥ 10 caracteres, administrador ≥ 12). El bloque cifrado está a la vista en la página.');
+  // Sistema único de contraseñas (17/11): una por persona, desde el archivo de accesos común
+  const accP = arg('accesos');
+  if (!accP) { console.error('Falta --accesos /Users/diseno/claves-biofy/accesos.json'); process.exit(1); }
+  const U = JSON.parse(readFileSync(accP, 'utf8')).usuarios.filter(u => u.webs && u.webs.pizarra);
+  const ver = U.filter(u => u.webs.pizarra === 'ver'), adm = U.filter(u => u.webs.pizarra === 'admin');
   cloud = {
     owner: S.owner, repo: S.repo, branch: S.branch || 'main', dir: S.dir || 'pizarra',
-    read: await encrypt(S.pw_ver, S.read_token),
-    write: await encrypt(S.pw_admin, S.write_token),
+    reads: [], writes: [],
   };
-  const ok = (await decrypt(cloud.read, S.pw_ver)) === S.read_token
-    && (await decrypt(cloud.write, S.pw_admin)) === S.write_token
-    && (await decrypt(cloud.write, S.pw_ver)) === null;
+  for (const u of ver) cloud.reads.push(await encrypt(u.pw, S.read_token));
+  for (const u of adm) cloud.writes.push(await encrypt(u.pw, S.write_token));
+  let ok = true;
+  for (const u of ver) ok = ok && (await Promise.all(cloud.reads.map(x => decrypt(x, u.pw)))).includes(S.read_token) && !(await Promise.all(cloud.writes.map(x => decrypt(x, u.pw)))).some(Boolean);
+  for (const u of adm) ok = ok && (await Promise.all(cloud.writes.map(x => decrypt(x, u.pw)))).includes(S.write_token);
+  console.log(`Personas: ${ver.length} solo ver · ${adm.length} administrador`);
   if (!ok) { console.error('La comprobación del cifrado ha fallado'); process.exit(1); }
 }
 html = html.replace(MARK, 'const CLOUD=' + JSON.stringify(cloud) + ';');

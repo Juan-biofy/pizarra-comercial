@@ -770,7 +770,7 @@ function pintarPanel(){
   pintarVersiones();pintarFotos();
 }
 $('#formAdmin').onsubmit=async e=>{e.preventDefault();const pw=$('#pwAdmin').value;if(!pw)return;
-  const t=await descifrar(CLOUD.write,pw);
+  const t=await primero(CLOUD.writes,pw);
   if(!t){toast('Contraseña de administrador incorrecta');$('#pwAdmin').select();return;}
   gh.write=t;gh.role='admin';guardarAcceso(recordado());$('#pwAdmin').value='';pintarPanel();marcarRol();toast('Modo administrador activado');};
 $('#salirAdmin').onclick=async()=>{
@@ -860,12 +860,14 @@ async function arrancar(){
     toast(errGh(e));return true;
   }
 }
+// Cada persona tiene su propia contraseña: se prueba con cada bloque hasta que uno abre
+async function primero(lista,pw){for(const b of lista||[]){const t=await descifrar(b,pw);if(t)return t;}return null;}
 function mostrarCandado(msg){$('#candado').classList.remove('hidden');$('#errCandado').textContent=msg||'';setTimeout(()=>$('#pwCandado').focus(),50);}
 $('#formCandado').onsubmit=async e=>{
   e.preventDefault();const pw=$('#pwCandado').value;if(!pw)return;
   const b=$('#btnCandado');b.disabled=true;b.textContent='Comprobando…';$('#errCandado').textContent='';
-  let read=await descifrar(CLOUD.read,pw),write=null,role='ver';
-  if(!read){const w=await descifrar(CLOUD.write,pw);if(w){read=w;write=w;role='admin';}}
+  let read=await primero(CLOUD.reads,pw),write=null,role='ver';
+  if(!read){const w=await primero(CLOUD.writes,pw);if(w){read=w;write=w;role='admin';}}
   if(!read){b.disabled=false;b.textContent='Entrar';$('#errCandado').textContent='Contraseña incorrecta';
     const f=$('#formCandado');f.classList.remove('sacude');void f.offsetWidth;f.classList.add('sacude');$('#pwCandado').select();return;}
   gh.read=read;gh.write=write;gh.role=role;guardarAcceso($('#recordar').checked);marcarRol();
