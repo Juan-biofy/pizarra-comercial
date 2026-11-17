@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>Pizarra comercial</title>
-<link rel="icon" href="data:image/svg+xml;base64,__LOGO_AZUL__">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='#2968fe'/%3E%3Cpath d='M23 14h18v11a9 9 0 0 1-18 0z' fill='white'/%3E%3Cpath d='M23 18h-6a6 6 0 0 0 7 8M41 18h6a6 6 0 0 1-7 8M32 34v8M24 49h16' fill='none' stroke='white' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -41,7 +41,11 @@ button{font:inherit;color:inherit}
 
 /* Cabecera */
 header{display:flex;align-items:center;gap:1.3vw;flex-wrap:wrap}
-.logo{height:5.4em;display:block}
+.logo{height:2.5em;display:block}
+/* logo horizontal + etiqueta con el nombre de la herramienta (Juan, 17/11) */
+.marca{display:flex;align-items:center;gap:.9em}
+.pill-herr{display:inline-flex;align-items:center;background:#e9effe;color:#2968fe;font-weight:700;border-radius:99px;padding:.45em 1.1em;font-size:1.05em;white-space:nowrap}
+:root[data-theme="dark"] .pill-herr{background:#1a2747;color:#9dbbff}
 .logo.blanco{display:none}
 :root[data-theme="dark"] .logo.azul{display:none}
 :root[data-theme="dark"] .logo.blanco{display:block}
@@ -246,7 +250,8 @@ footer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1.4vw;align-ite
 /* Pantalla de contraseña */
 .candado{position:fixed;inset:0;z-index:40;background:var(--bg);display:grid;place-items:center;padding:16px}
 .candado form{background:var(--panel);border-radius:1.5em;box-shadow:var(--shadow);padding:2.2em 2em;width:min(26em,100%);text-align:center;display:flex;flex-direction:column;gap:.9em;font-size:max(15px,1em)}
-.candado .logo{height:6em;margin:0 auto}
+.candado .logo{height:2.6em;margin:0}
+.candado .marca{justify-content:center;margin-bottom:.4em}
 .candado h2{font-weight:900;font-size:1.5em}
 .candado input[type=password]{font:inherit;font-size:1.1em;padding:.7em .9em;border-radius:.8em;border:2px solid var(--line);background:var(--bg);color:var(--ink);text-align:center}
 .candado label{display:flex;gap:.5em;align-items:center;justify-content:center;font-weight:700;color:var(--muted);font-size:.9em}
@@ -279,8 +284,8 @@ footer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1.4vw;align-ite
 
 <div class="app">
   <header>
-    <img class="logo azul" src="data:image/svg+xml;base64,__LOGO_AZUL__" alt="Culligan Biofy">
-    <img class="logo blanco" src="data:image/svg+xml;base64,__LOGO_BLANCO__" alt="Culligan Biofy">
+    <div class="marca"><img class="logo azul" src="data:image/svg+xml;base64,__LOGO_AZUL__" alt="Culligan Biofy">
+    <img class="logo blanco" src="data:image/svg+xml;base64,__LOGO_BLANCO__" alt="Culligan Biofy"><span class="pill-herr">Pizarra</span></div>
     <button class="fecha" id="fecha" title="Fecha de los datos">
       <span class="cal"><small id="calMes">—</small><b id="calDia">—</b></span>
       <span class="ftxt"><small>Pizarra comercial · datos hasta el</small><b id="fechaTxt">Cargando…</b></span>
@@ -382,8 +387,8 @@ footer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1.4vw;align-ite
 <!-- Contraseña -->
 <div class="candado hidden" id="candado">
   <form id="formCandado">
-    <img class="logo azul" src="data:image/svg+xml;base64,__LOGO_AZUL__" alt="Culligan Biofy">
-    <img class="logo blanco" src="data:image/svg+xml;base64,__LOGO_BLANCO__" alt="Culligan Biofy">
+    <div class="marca"><img class="logo azul" src="data:image/svg+xml;base64,__LOGO_AZUL__" alt="Culligan Biofy">
+    <img class="logo blanco" src="data:image/svg+xml;base64,__LOGO_BLANCO__" alt="Culligan Biofy"><span class="pill-herr">Pizarra</span></div>
     <h2>Pizarra comercial</h2>
     <input type="password" id="pwCandado" placeholder="Contraseña" autocomplete="current-password">
     <label><input type="checkbox" id="recordar" checked> Recordar este dispositivo (2 semanas)</label>

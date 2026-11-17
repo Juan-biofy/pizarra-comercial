@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /*
   Monta el index.html publicable de la Pizarra comercial a partir de src/pizarra.html:
-    1. sustituye «__LOGO_AZUL__» y «__LOGO_BLANCO__» por los logos verticales (SVG) en base64;
+    1. sustituye «__LOGO_AZUL__» y «__LOGO_BLANCO__» por los logos horizontales (SVG) en base64;
     2. sustituye «const CLOUD=/*__CLOUD__*\/null;» por la conexión con el repositorio privado de datos,
        con los tokens de GitHub cifrados con las contraseñas.
 
@@ -37,8 +37,8 @@ const aqui = dirname(fileURLToPath(import.meta.url));
 const arg = (k, d) => { const i = process.argv.indexOf('--' + k); return i > 0 ? process.argv[i + 1] : d; };
 const flag = k => process.argv.includes('--' + k);
 const src = arg('src', join(aqui, '../src/pizarra.html'));
-const logoAzul = arg('logo', join(aqui, '../src/logo-vertical-blue.svg'));
-const logoBlanco = arg('logo-blanco', join(aqui, '../src/logo-vertical-white.svg'));
+const logoAzul = arg('logo', join(aqui, '../src/logo-horizontal-blue.svg'));
+const logoBlanco = arg('logo-blanco', join(aqui, '../src/logo-horizontal-white.svg'));
 const out = arg('out', join(aqui, '../index.html'));
 
 let html = readFileSync(src, 'utf8');
