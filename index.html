@@ -885,5 +885,24 @@ burbujas();pintar();marcarRol();
   await arrancar();
 })();
 </script>
+<!-- Mantener la TV despierta (18/11/2026): las LG OLED con webOS 6 solo aguantan sin salvapantallas si hay un vídeo
+     a pantalla completa. Vídeo negro (640×360, archivo tv.mp4) a toda la pantalla, siempre en silencio, TAPADO por una capa del mismo color
+     que el fondo: no se ve ni se oye nada. Solo en pantallas grandes (TV y ordenador). -->
+<video id="despierta" muted loop playsinline aria-hidden="true" tabindex="-1" style="display:none;position:fixed;left:0;top:0;width:100vw;height:100vh;object-fit:cover;z-index:-2;pointer-events:none;border:0;margin:0;padding:0" src="tv.mp4" preload="auto"></video>
+<div id="tapaVideo" aria-hidden="true" style="display:none;position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:-1;pointer-events:none;background:var(--bg);transition:background .4s"></div>
+<script>
+(()=>{
+  const v=document.getElementById('despierta'),t=document.getElementById('tapaVideo');if(!v||!t)return;
+  if(Math.max(screen.width||0,window.innerWidth||0)<1000)return;
+  t.style.display='block';v.style.display='block';v.muted=true;v.volume=0;
+  const play=()=>{v.muted=true;try{const p=v.play();if(p&&p.catch)p.catch(()=>{});}catch(e){}};
+  let wl=null;
+  const pedirWL=async()=>{try{if('wakeLock' in navigator&&!document.hidden&&!wl){wl=await navigator.wakeLock.request('screen');wl.addEventListener('release',()=>{wl=null;});}}catch(e){wl=null;}};
+  ['click','keydown','touchstart'].forEach(e=>document.addEventListener(e,()=>{play();pedirWL();},{passive:true}));
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden){play();pedirWL();}});
+  setInterval(()=>{if(v.paused)play();pedirWL();},30000);
+  play();pedirWL();
+})();
+</script>
 </body>
 </html>
